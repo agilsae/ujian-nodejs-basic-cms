@@ -1,5 +1,41 @@
 const multer = require('multer');
 
+//------client-----
+exports.home = function (req, res) {
+    req.getConnection(function (err, connect){
+        var query = connect.query(`SELECT * FROM product`, function(err, rows){
+            if (err){
+                console.log('Err', err);
+            }
+
+            res.render('index',{
+                data:rows
+            });
+        });
+    })
+}
+
+exports.detailProduct = function(req, res) {
+    var id_produk = req.params.id_product;
+
+    req.getConnection(function(err, connect){
+        var query = connect.query(`SELECT * FROM product WHERE id_porduct = ${id_produk}`, function(err, rows){
+            if (err){
+                console.log('Err', err);
+            }
+
+            res.render('single',{
+                data:rows
+            });
+        });
+    })
+}
+
+
+
+
+//------admin-------
+
 exports.login = function(req, res){
     let message = '';
     let session = req.session;
@@ -17,29 +53,29 @@ exports.login = function(req, res){
                     req.session.adminId = results[0].id_admin;
                     req.session.admin = results[0];
                     console.log(results[0].id_admin);
-                    res.redirect('./home');
+                    res.redirect('/admin/home');
                 }else {
                     message = 'Username or Password Incorrect! Please try again.';
-                    res.render('./index', {
+                    res.render('/admin/index', {
                         message: message
                     });
                 }
             });
         });
     }else{
-        res.render('./index',{
+        res.render('./admin/index',{
             message: message
         });
     }   
 }
 
-exports.home = function (req, res){
+exports.admin = function (req, res){
     var admin = req.session.admin;
     var adminId = req.session.adminId;
     console.log('id.admin =' + adminId);
 
     if (adminId == null){
-        res.redirect('/login');
+        res.redirect('/admin/login');
         return;
     }
 
@@ -48,7 +84,7 @@ exports.home = function (req, res){
 
         var query = connect.query(sql, function(err, results){
             //jika koneksi dan query berhasil, tampilkan home admin
-            res.render('./home', {
+            res.render('./admin/home', {
                 pathname: 'home',
                 data: results
             });
@@ -62,11 +98,11 @@ exports.addProduct = function (req, res){
     console.log('id.admin =' + adminId);
 
     if (adminId == null){
-        res.redirect('/login');
+        res.redirect('/admin/login');
         return;
     }
 
-    res.render('./home',{
+    res.render('./admin/home',{
         pathname: 'add_product'
     });
 }
@@ -109,7 +145,7 @@ exports.processAddProduct = function(req, res){
                 }
 
                 req.flash('info','Succes add data! Data has been added');
-                res.redirect('/home');
+                res.redirect('/admin/home');
             });
         });
     });
@@ -122,7 +158,7 @@ exports.editProduct = function (req, res){
     console.log('id.admin =' + adminId);
 
     if (adminId == null){
-        res.redirect('/login');
+        res.redirect('/admin/login');
         return;
     }
 
@@ -134,7 +170,7 @@ exports.editProduct = function (req, res){
                 console.log('Error Show product: %s', err);
             }
 
-            res.render('./home',{
+            res.render('./admin/home',{
                 id_product: id_product,
                 pathname: 'edit_product',
                 data: results
@@ -190,7 +226,7 @@ exports.processEditProduct = function(req, res) {
                 }
 
                 req.flash('info','Succes edit data! Data has been edited');
-                res.redirect('/home');
+                res.redirect('/admin/home');
             })
         });
     });
@@ -203,7 +239,7 @@ exports.deleteProduct = function(req, res) {
     console.log('id.admin =' + adminId);
 
     if (adminId == null){
-        res.redirect('/login');
+        res.redirect('/admin/login');
         return;
     }
 
@@ -214,7 +250,7 @@ exports.deleteProduct = function(req, res) {
                console.log('Error delete product: %s', err);
            }
            req.flash('info','Data has been deleted');
-           res.redirect('/home');
+           res.redirect('/admin/home');
         })
     });
 }

@@ -41,16 +41,22 @@ app.use(
 // app.get('/', function(req, res){
 //     res.send('Server is running on port ' + app.get('port'));
 // });
-
-app.get('/', router.home);
+app.get('/', function(req, res){
+    // res.send('server is running on port ' + app.get('port'));
+    res.redirect('/home');
+});
 app.get('/home', router.home);
-app.get('/login', router.login);
-app.post('/login', router.login);
-app.get('/add_product', router.addProduct);
-app.post('/add_product', router.processAddProduct);
-app.get('/edit_product/:id_product', router.editProduct);
-app.post('/edit_product/:id_product', router.processEditProduct);
-app.get('/delete_product/:id_product', router.deleteProduct);
+app.get('/detail_product/:id_product', router.detailProduct);
+
+app.get('/admin', router.admin);
+app.get('/admin/home', router.admin);
+app.get('/admin/login', router.login);
+app.post('/admin/login', router.login);
+app.get('/admin/add_product', router.addProduct);
+app.post('/admin/add_product', router.processAddProduct);
+app.get('/admin/edit_product/:id_product', router.editProduct);
+app.post('/admin/edit_product/:id_product', router.processEditProduct);
+app.get('/admin/delete_product/:id_product', router.deleteProduct);
 
 app.listen(app.get('port'), function(){
     console.log('Server is running on port ' + app.get('port'));

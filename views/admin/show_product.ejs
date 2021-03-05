@@ -6,7 +6,7 @@
   
                 <div class="box-tools pull-right">
                   <div class="input-group input-group-sm">
-                    <a href="/add_product">
+                    <a href="/admin/add_product">
                       <button type="button" class="btn btn-block btn-success"><i class="fa fa-plus"></i>&nbsp;Add Product</button>
                     </a>
                     <!-- <input type="text" name="table_search" class="form-control pull-right" placeholder="Search"> 
@@ -51,8 +51,8 @@
                     <td>Rp. <%- data[i].harga_product %></td>
                     <td><%- data[i].des_product.substring(0, 150) %>... <a href="#">read more</a></td>
                     <td>
-                      <a class="btn btn-warning" href="/edit_product/<%- data[i].id_product %>"><i class="glyphicon glyphicon-edit"></i></a>                      
-                      <a class="btn btn-danger" href="/delete_product/<%- data[i].id_product %>" onclick="return confirm('Are you sure want to delete?')"><i class="glyphicon glyphicon-trash"></i></a>
+                      <a class="btn btn-warning" href="/admin/edit_product/<%- data[i].id_product %>"><i class="glyphicon glyphicon-edit"></i></a>                      
+                      <a class="btn btn-danger" href="/admin/delete_product/<%- data[i].id_product %>" onclick="return confirm('Are you sure want to delete?')"><i class="glyphicon glyphicon-trash"></i></a>
                     </td>
                   </tr>  
                   <%
